@@ -10,4 +10,4 @@ The holiday check activity is a custom activity built for enabling marketing clo
     - Information can be found in the documentation on [Key Management](http://help.marketingcloud.com/en/documentation/marketing_cloud/administration/keymanagement/) and [Encode with Customer Key](https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-app-development.meta/mc-app-development/encode-custom-activities-using-jwt-customer-key.htm).
 4. The unique key of the created Journey Builder Activity needs to be added to public/config.json properties `key` and `configurationArguments.applicationExtensionKey`
 5. _Optional_: Replace the icons for the custom activity in public/images.
-6. Deploy the application to the service you selected in step 1.
+6. Deploy the application to the service you selected in step 1. Test
