@@ -78,7 +78,7 @@
 			"outArguments": [],
 			"url": "https://customblackout.herokuapp.com/journeybuilder/execute",
 			"verb": "POST",
-			"body": ""
+			"body": "",
 			"header": "",
 			"format": "json",
 			"timeout": 90000
