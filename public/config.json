@@ -9,7 +9,7 @@
 	"type": "RESTDECISION",
 	"lang": {
 		"en-US": {
-			"name": "Custom Blackout",
+			"name": "New Custom Blackout",
 			"description": "A custom activity to check if the working it is a holiday or not or to send emails on specific days."
 		}
 	},
