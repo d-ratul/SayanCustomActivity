@@ -15,25 +15,25 @@
 	},
 	"configurationArguments": {
 		"save": {
-			"url": "https://customblackout.herokuapp.com/journeybuilder/save",
+			"url": "https://custom-blackout.herokuapp.com/journeybuilder/save",
 			"verb": "POST",
 			"body": ""
 			
 		},
 		"publish": {
-			"url": "https://customblackout.herokuapp.com/journeybuilder/publish",
+			"url": "https://custom-blackout.herokuapp.com/journeybuilder/publish",
 			"verb": "POST",
 			"body": ""
 		},
 		"validate": {
-			"url": "https://customblackout.herokuapp.com/journeybuilder/validate",
+			"url": "https://custom-blackout.herokuapp.com/journeybuilder/validate",
 			"verb": "POST",
 			"body": ""
 			
 			
 		},
 		"stop": {
-			"url": "https://customblackout.herokuapp.com/journeybuilder/stop",
+			"url": "https://custom-blackout.herokuapp.com/journeybuilder/stop",
 			"verb": "POST",
 			"body": ""
 			
@@ -76,7 +76,7 @@
 				}
 			],
 			"outArguments": [],
-			"url": "https://customblackout.herokuapp.com/journeybuilder/execute",
+			"url": "https://custom-blackout.herokuapp.com/journeybuilder/execute",
 			"verb": "POST",
 			"body": "",
 			"header": "",
@@ -95,7 +95,7 @@
 		}
 	],
 	"edit": {
-		"url": "https://customblackout.herokuapp.com/index.html",
+		"url": "https://custom-blackout.herokuapp.com/index.html",
 		"height": 475,
 		"width": 1000
 	},
