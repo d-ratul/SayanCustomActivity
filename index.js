@@ -74,6 +74,7 @@ app.post([BASE_URL + '/publish', BASE_URL + '/validate', BASE_URL + '/stop'], (r
 
 //TODO : Add logic to verify if you have received the parameters
 app.post(BASE_URL + '/save', (req, res) => {
+    console.log("Save");
     return res.status(SUCCESS_STATUS_CODE).json({success: true});
 });
 
