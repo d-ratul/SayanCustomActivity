@@ -11,3 +11,4 @@ The holiday check activity is a custom activity built for enabling marketing clo
 4. The unique key of the created Journey Builder Activity needs to be added to public/config.json properties `key` and `configurationArguments.applicationExtensionKey`
 5. _Optional_: Replace the icons for the custom activity in public/images.
 6. Deploy the application to the service you selected in step 1.
+Edited
