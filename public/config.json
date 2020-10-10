@@ -17,25 +17,29 @@
 		"save": {
 			"url": "https://custom-blackout.herokuapp.com/activity/save",
 			"verb": "POST",
-			"body": ""
+			"body": "",
+			"useJwt": true
 			
 		},
 		"publish": {
 			"url": "https://custom-blackout.herokuapp.com/activity/publish",
 			"verb": "POST",
-			"body": ""
+			"body": "",
+			"useJwt": true
 		},
 		"validate": {
 			"url": "https://custom-blackout.herokuapp.com/activity/validate",
 			"verb": "POST",
-			"body": ""
+			"body": "",
+			"useJwt": true
 			
 			
 		},
 		"stop": {
 			"url": "https://custom-blackout.herokuapp.com/activity/stop",
 			"verb": "POST",
-			"body": ""
+			"body": "",
+			"useJwt": true
 			
 			
 		}
@@ -79,6 +83,7 @@
 			"url": "https://custom-blackout.herokuapp.com/activity/execute",
 			"verb": "POST",
 			"body": "",
+			"useJwt": true,
 			"header": "",
 			"format": "json",
 			"timeout": 90000
