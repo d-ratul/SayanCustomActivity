@@ -14,33 +14,35 @@
 		}
 	},
 	"configurationArguments": {
+		"applicationExtensionKey": "177f809d-9527-4e02-b36f-7e7a4a4fa84a",
 		"save": {
 			"url": "https://custom-blackout.herokuapp.com/activity/save",
 			"verb": "POST",
 			"body": "",
-			"useJwt": true
-			
+			"useJwt": true,
+			"customerKey":"56bf39db-8632-4338-9f23-4b0550098197"			
 		},
 		"publish": {
 			"url": "https://custom-blackout.herokuapp.com/activity/publish",
 			"verb": "POST",
 			"body": "",
-			"useJwt": true
+			"useJwt": true,
+			"customerKey":"56bf39db-8632-4338-9f23-4b0550098197"	
 		},
 		"validate": {
 			"url": "https://custom-blackout.herokuapp.com/activity/validate",
 			"verb": "POST",
 			"body": "",
-			"useJwt": true
-			
+			"useJwt": true,
+			"customerKey":"56bf39db-8632-4338-9f23-4b0550098197"				
 			
 		},
 		"stop": {
 			"url": "https://custom-blackout.herokuapp.com/activity/stop",
 			"verb": "POST",
 			"body": "",
-			"useJwt": true
-			
+			"useJwt": true,
+			"customerKey":"56bf39db-8632-4338-9f23-4b0550098197"				
 			
 		}
 	},
@@ -85,6 +87,7 @@
 			"body": "",
 			"useJwt": true,
 			"header": "",
+			"customerKey":"56bf39db-8632-4338-9f23-4b0550098197",	
 			"format": "json",
 			"timeout": 90000
 		}
