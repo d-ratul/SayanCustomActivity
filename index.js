@@ -36,7 +36,7 @@ app.use(require('body-parser').raw({
 
 // Route that is called for every contact who reaches the custom split activity
 app.post(BASE_URL + '/execute', (req, res) => {
-    console.log('Getting new Request...');
+    console.log('Getting new Request...' , req.body);
     verifyToken(req.body, Pkg.options.salesforce.marketingCloud.jwtSecret, (err, decoded) => {
         console.log('REQUEST RECEIVED', JSON.stringify(decoded));
         // verification error -> unauthorized request
