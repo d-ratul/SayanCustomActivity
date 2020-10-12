@@ -81,15 +81,17 @@ module.exports.updateDataExtension = function (blackoutDE, blackoutDEHolidayFiel
         props: [holidayDEField]
       };
       
-    var holidayRow = client.dataExtensionRow(deOpt);
+    var holidayRow = client.dataExtensionRow(holidayDEDetails);
 
     return new Promise(function (resolve, reject) {
-        deRow.get(function (err, response) {
+        holidayRow.get(function (err, response) {
             if (err) {
                 reject(err);
             } else {
+                console.log("Holiday DE response - ",response);
                 let holidayList = fetchHolidayListfromHolidayDE(response,holidayDEField)
                 // let parsedHolidays = _parseHolidayServiceResponse(response, holidayDEField);
+                console.log(" -- Holi List --",holidayList)
                 resolve(holidayList);
             }
         })
@@ -109,15 +111,17 @@ module.exports.updateDataExtension = function (blackoutDE, blackoutDEHolidayFiel
             //Find the day again after incrementing
             currentDayOfWeek = temporaryDate.format(DAY_OF_WEEK_FORMAT);
             if (holidayList.length > 0) {
-                isHoliday = holidayList.includes(temporaryDate.format(loginOptions.defaultDateFormat));
+                isHoliday = holidayList.includes(temporaryDate.format(sfmcInstanceConfigs.defaultDateFormat));
             }
         }
+        console.log("Temprory Date",temporaryDate);
         return {
-            temporaryDate: temporaryDate.format(loginOptions.defaultDateFormat),
+            temporaryDate: temporaryDate.format(sfmcInstanceConfigs.defaultDateFormat),
             subscriberKey: subscriberKey,
             blackoutDESubscriberField: blackoutDESubscriberField,
             blackoutDE: blackoutDE,
             blackoutDEHolidayField: blackoutDEHolidayField
+
         }
     }).then(function (parameters) {
         return _fetchSubscriberRowInBlackoutDataExtension(parameters)
@@ -130,9 +134,53 @@ module.exports.updateDataExtension = function (blackoutDE, blackoutDEHolidayFiel
 
 };
 
-let fetchHolidayListfromHolidayDE = function(parameters){
-    return "true"
+let fetchHolidayListfromHolidayDE = function(response, fieldName){
+    const todayDateUTC = moment.utc().format(loginOptions.defaultDateFormat);
+    if (cache.get(todayDateUTC)) {
+        return cache.get(todayDateUTC);
+    } else {
+        let holidayList = [];
+        fieldName = fieldName || 'Holiday Date';
+
+        if (result.body && result.body.Results) {
+            result.body.Results.forEach(function (value) {
+                value.Properties.Property.forEach(function (innerValue) {
+                    if (innerValue.Name.toLowerCase() === fieldName.toLowerCase()) {
+                        let receivedDate = moment.utc(innerValue.Value, sfmcInstanceConfigs.defaultDateFormat);
+                        holidayList.push(receivedDate.format(sfmcInstanceConfigs.defaultDateFormat));
+                    }
+                })
+            })
+        }
+        //Cache the holiday response so that we do not have to make call out again and again.
+        cache.set(todayDateUTC, holidayList);
+        return holidayList;
+    }
 }
+
+// let _parseHolidayServiceResponse = function (response, fieldName) {
+//     
+//     if (cache.get(todayDateUTC)) {
+//         return cache.get(todayDateUTC);
+//     } else {
+//         let holidayList = [];
+//         fieldName = fieldName || 'Holiday Date';
+
+//         if (result.body && result.body.Results) {
+//             result.body.Results.forEach(function (value) {
+//                 value.Properties.Property.forEach(function (innerValue) {
+//                     if (innerValue.Name.toLowerCase() === fieldName.toLowerCase()) {
+//                         let receivedDate = moment.utc(innerValue.Value, loginOptions.defaultDateFormat);
+//                         holidayList.push(receivedDate.format(loginOptions.defaultDateFormat));
+//                     }
+//                 })
+//             })
+//         }
+//         //Cache the holiday response so that we do not have to make call out again and again.
+//         cache.set(todayDateUTC, holidayList);
+//         return holidayList;
+//     }
+// };
 
 
 
@@ -212,26 +260,4 @@ let fetchHolidayListfromHolidayDE = function(parameters){
 //         && result.body.Results[0].Properties.length > 0;
 // };
 
-// let _parseHolidayServiceResponse = function (response, fieldName) {
-//     const todayDateUTC = moment.utc().format(loginOptions.defaultDateFormat);
-//     if (cache.get(todayDateUTC)) {
-//         return cache.get(todayDateUTC);
-//     } else {
-//         let holidayList = [];
-//         fieldName = fieldName || 'Holiday Date';
 
-//         if (result.body && result.body.Results) {
-//             result.body.Results.forEach(function (value) {
-//                 value.Properties.Property.forEach(function (innerValue) {
-//                     if (innerValue.Name.toLowerCase() === fieldName.toLowerCase()) {
-//                         let receivedDate = moment.utc(innerValue.Value, loginOptions.defaultDateFormat);
-//                         holidayList.push(receivedDate.format(loginOptions.defaultDateFormat));
-//                     }
-//                 })
-//             })
-//         }
-//         //Cache the holiday response so that we do not have to make call out again and again.
-//         cache.set(todayDateUTC, holidayList);
-//         return holidayList;
-//     }
-// };
