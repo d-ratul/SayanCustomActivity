@@ -19,48 +19,78 @@ const cache = require("./cache");
 const packageFile = require(path.join(__dirname, '../package.json'));
 const moment = require('moment');
 
-const loginOptions = packageFile.options.salesforce.marketingCloud;
+const sfmcInstanceConfigs = packageFile.options.salesforce.marketingCloud;
+const sfmcApiConfigs = packageFile.options.salesforce.apiConfigs;
 
-const FuelSDK = require('fuelsdk-node');
+
+// const FuelSDK = require('fuelsdk-node');
 const SUCCESS_STATUS_CODE = 200;
 const DAY_OF_WEEK_FORMAT = "dddd";
 let expressResponse;
 
 
-//TODO : Move to config vars
-const SFMC_Client = new FuelSDK(loginOptions.clientId, loginOptions.clientSecret, loginOptions.marketingCloudInstance);
+// //TODO : Move to config vars
+// const SFMC_Client = new FuelSDK(loginOptions.clientId, loginOptions.clientSecret, loginOptions.marketingCloudInstance);
+
+const ET_Client = require('sfmc-fuelsdk-node');
+const clientId = sfmcApiConfigs.clientId
+const clientSecret = sfmcApiConfigs.clientSecret
+const origin = sfmcApiConfigs.origin
+const authOrigin = sfmcApiConfigs.authOrigin
+const soapOrigin = sfmcApiConfigs.soapOrigin
+const accountId = sfmcApiConfigs.accountId
+
+const obj = {
+  origin: origin,
+  authOrigin: authOrigin,
+  soapOrigin: soapOrigin,
+  authOptions: { 
+    authVersion: 2,
+    accountId: accountId
+  }
+}
+const stack = 's7';
+const client = new ET_Client(clientId, clientSecret, stack, obj);
 
 module.exports.updateDataExtension = function (blackoutDE, blackoutDEHolidayField, blackoutDESubscriberField,
                                                subscriberKey, holidayDE, holidayDEField,
                                                daysToSendEmailOn, response) {
 
-    const todayDateUTC = moment.utc().format(loginOptions.defaultDateFormat);
+    const todayDateUTC = moment.utc().format(sfmcInstanceConfigs.defaultDateFormat);
     expressResponse = response;
 
     // Only get holidays starting today. Default 2500 holidays will be fetched.
 
-    let options = {
-        Name: "SDKDataExtension",
-        props: [
-            holidayDEField
-        ],
-        filter: {
-            leftOperand: holidayDEField,
-            operator: 'greaterThanOrEqual',
-            rightOperand: todayDateUTC
-        }
-    };
+    // let options = {
+    //     Name: "SDKDataExtension",
+    //     props: [
+    //         holidayDEField
+    //     ],
+    //     filter: {
+    //         leftOperand: holidayDEField,
+    //         operator: 'greaterThanOrEqual',
+    //         rightOperand: todayDateUTC
+    //     }
+    // };
 
-    let deRow = SFMC_Client.dataExtensionColumn(options);
-    deRow.objName = `DataExtensionObject[${holidayDE}]`;
+    // let deRow = SFMC_Client.dataExtensionColumn(options);
+    // deRow.objName = `DataExtensionObject[${holidayDE}]`;
+
+    var holidayDEDetails= {
+        Name: holidayDE,
+        props: [holidayDEField]
+      };
+      
+    var holidayRow = client.dataExtensionRow(deOpt);
 
     return new Promise(function (resolve, reject) {
         deRow.get(function (err, response) {
             if (err) {
                 reject(err);
             } else {
-                let parsedHolidays = _parseHolidayServiceResponse(response, holidayDEField);
-                resolve(parsedHolidays);
+                let holidayList = fetchHolidayListfromHolidayDE(response,holidayDEField)
+                // let parsedHolidays = _parseHolidayServiceResponse(response, holidayDEField);
+                resolve(holidayList);
             }
         })
     }).then(function (holidayList) {
@@ -100,101 +130,108 @@ module.exports.updateDataExtension = function (blackoutDE, blackoutDEHolidayFiel
 
 };
 
-let _fetchSubscriberRowInBlackoutDataExtension = function (parameters) {
-    // Check if a subscriber row exists and then fire an insert or update to insert data row.
-    return new Promise(function (resolve, reject) {
-        let options = {
-            Name: "SDKDataExtension",
-            props: [
-                parameters.blackoutDE
-            ],
-            filter: {
-                leftOperand: parameters.blackoutDESubscriberField,
-                operator: 'equals',
-                rightOperand: parameters.subscriberKey
-            }
-        };
+let fetchHolidayListfromHolidayDE = function(parameters){
+    return "true"
+}
 
-        let deRow = SFMC_Client.dataExtensionColumn(options);
-        deRow.objName = `DataExtensionObject[${parameters.blackoutDE}]`;
 
-        deRow.get(function (err, response) {
-            if (err) {
-                reject(err);
-            } else {
-                let isSubscriber = _parseSubscriberKeyQueryResponse(response);
-                resolve({
-                    isSubscriber: isSubscriber,
-                    lastHolidayDate: parameters.temporaryDate,
-                    subscriberKey: parameters.subscriberKey,
-                    blackoutDEHolidayField: parameters.blackoutDEHolidayField,
-                    blackoutDE: parameters.blackoutDE
-                });
-            }
-        })
 
-    })
-};
 
-let _createLastHolidayRow = function (parameters) {
-    return new Promise(function (resolve, reject) {
-        let options = {};
-        options.CustomerKey = parameters.blackoutDE;
-        options.Name = "SDKDataExtension";
-        options.props[parameters.blackoutDEHolidayField] = parameters.lastHolidayDate;
-        options.props["SubscriberKey"] = parameters.subscriberKey;
+// let _fetchSubscriberRowInBlackoutDataExtension = function (parameters) {
+//     // Check if a subscriber row exists and then fire an insert or update to insert data row.
+//     return new Promise(function (resolve, reject) {
+//         let options = {
+//             Name: "SDKDataExtension",
+//             props: [
+//                 parameters.blackoutDE
+//             ],
+//             filter: {
+//                 leftOperand: parameters.blackoutDESubscriberField,
+//                 operator: 'equals',
+//                 rightOperand: parameters.subscriberKey
+//             }
+//         };
 
-        let deRow = SFMC_Client.dataExtensionRow(options);
+//         let deRow = SFMC_Client.dataExtensionColumn(options);
+//         deRow.objName = `DataExtensionObject[${parameters.blackoutDE}]`;
 
-        if (parameters.isSubscriber) {
-            deRow.post(function (err, response) {
-                if (err) {
-                    return expressResponse.status(500).send(err)
-                } else {
-                    return expressResponse.status(SUCCESS_STATUS_CODE).json({branchResult: 'forward'});
-                }
-            });
-        } else {
-            deRow.patch(function (err, response) {
-                if (err) {
-                    return expressResponse.status(500).send(err)
-                } else {
-                    return expressResponse.status(SUCCESS_STATUS_CODE).json({branchResult: 'forward'});
-                }
-            });
-        }
+//         deRow.get(function (err, response) {
+//             if (err) {
+//                 reject(err);
+//             } else {
+//                 let isSubscriber = _parseSubscriberKeyQueryResponse(response);
+//                 resolve({
+//                     isSubscriber: isSubscriber,
+//                     lastHolidayDate: parameters.temporaryDate,
+//                     subscriberKey: parameters.subscriberKey,
+//                     blackoutDEHolidayField: parameters.blackoutDEHolidayField,
+//                     blackoutDE: parameters.blackoutDE
+//                 });
+//             }
+//         })
 
-    })
-};
+//     })
+// };
 
-let _parseSubscriberKeyQueryResponse = function (result) {
-    return result.body
-        && result.body.Results
-        && result.body.Results[0]
-        && result.body.Results[0].Properties
-        && result.body.Results[0].Properties.length > 0;
-};
+// let _createLastHolidayRow = function (parameters) {
+//     return new Promise(function (resolve, reject) {
+//         let options = {};
+//         options.CustomerKey = parameters.blackoutDE;
+//         options.Name = "SDKDataExtension";
+//         options.props[parameters.blackoutDEHolidayField] = parameters.lastHolidayDate;
+//         options.props["SubscriberKey"] = parameters.subscriberKey;
 
-let _parseHolidayServiceResponse = function (response, fieldName) {
-    const todayDateUTC = moment.utc().format(loginOptions.defaultDateFormat);
-    if (cache.get(todayDateUTC)) {
-        return cache.get(todayDateUTC);
-    } else {
-        let holidayList = [];
-        fieldName = fieldName || 'Holiday Date';
+//         let deRow = SFMC_Client.dataExtensionRow(options);
 
-        if (result.body && result.body.Results) {
-            result.body.Results.forEach(function (value) {
-                value.Properties.Property.forEach(function (innerValue) {
-                    if (innerValue.Name.toLowerCase() === fieldName.toLowerCase()) {
-                        let receivedDate = moment.utc(innerValue.Value, loginOptions.defaultDateFormat);
-                        holidayList.push(receivedDate.format(loginOptions.defaultDateFormat));
-                    }
-                })
-            })
-        }
-        //Cache the holiday response so that we do not have to make call out again and again.
-        cache.set(todayDateUTC, holidayList);
-        return holidayList;
-    }
-};
+//         if (parameters.isSubscriber) {
+//             deRow.post(function (err, response) {
+//                 if (err) {
+//                     return expressResponse.status(500).send(err)
+//                 } else {
+//                     return expressResponse.status(SUCCESS_STATUS_CODE).json({branchResult: 'forward'});
+//                 }
+//             });
+//         } else {
+//             deRow.patch(function (err, response) {
+//                 if (err) {
+//                     return expressResponse.status(500).send(err)
+//                 } else {
+//                     return expressResponse.status(SUCCESS_STATUS_CODE).json({branchResult: 'forward'});
+//                 }
+//             });
+//         }
+
+//     })
+// };
+
+// let _parseSubscriberKeyQueryResponse = function (result) {
+//     return result.body
+//         && result.body.Results
+//         && result.body.Results[0]
+//         && result.body.Results[0].Properties
+//         && result.body.Results[0].Properties.length > 0;
+// };
+
+// let _parseHolidayServiceResponse = function (response, fieldName) {
+//     const todayDateUTC = moment.utc().format(loginOptions.defaultDateFormat);
+//     if (cache.get(todayDateUTC)) {
+//         return cache.get(todayDateUTC);
+//     } else {
+//         let holidayList = [];
+//         fieldName = fieldName || 'Holiday Date';
+
+//         if (result.body && result.body.Results) {
+//             result.body.Results.forEach(function (value) {
+//                 value.Properties.Property.forEach(function (innerValue) {
+//                     if (innerValue.Name.toLowerCase() === fieldName.toLowerCase()) {
+//                         let receivedDate = moment.utc(innerValue.Value, loginOptions.defaultDateFormat);
+//                         holidayList.push(receivedDate.format(loginOptions.defaultDateFormat));
+//                     }
+//                 })
+//             })
+//         }
+//         //Cache the holiday response so that we do not have to make call out again and again.
+//         cache.set(todayDateUTC, holidayList);
+//         return holidayList;
+//     }
+// };
