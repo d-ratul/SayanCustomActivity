@@ -29,7 +29,7 @@ const DAY_OF_WEEK_FORMAT = "dddd";
 let expressResponse;
 
 
-// //TODO : Move to config vars
+// //TODO : Move to config var
 // const SFMC_Client = new FuelSDK(loginOptions.clientId, loginOptions.clientSecret, loginOptions.marketingCloudInstance);
 
 const ET_Client = require('sfmc-fuelsdk-node');
