@@ -136,6 +136,8 @@ module.exports.updateDataExtension = function (blackoutDE, blackoutDEHolidayFiel
 
 let fetchHolidayListfromHolidayDE = function(response, fieldName){
     const todayDateUTC = moment.utc().format(sfmcInstanceConfigs.defaultDateFormat);
+    let result = JSON.parse(response);
+
     if (cache.get(todayDateUTC)) {
         return cache.get(todayDateUTC);
     } else {
