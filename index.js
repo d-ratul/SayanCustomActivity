@@ -10,7 +10,7 @@
 const Path = require('path');
 const express = require('express');
 const Pkg = require(Path.join(__dirname, './package.json'));
-// const marketingCloudService = require('./private/marketing-cloud-service');
+const marketingCloudService = require('./private/marketing-cloud-service');
 const verifyToken = require('./private/jwt-verification').verifyToken;
 const BASE_URL = '/activity';//'/salesforceMarketingCloud/customActivities/blackoutActivity';
 const SUCCESS_STATUS_CODE = 200;
