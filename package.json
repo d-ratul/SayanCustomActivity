@@ -36,6 +36,14 @@
 				"username": "webinar_training",
 				"password": "Deloitte@1234",
 				"jwtSecret":"7GLDNS96rv9rp7j6tmtyJV7-mjB1Z_RZoblvkyB47V0sTEKsWC87x2pcuIaUSsUkQZyp_urqi8Enc7GXNw8RcsWEZIBvL_3o34yCKcoLP3N7RrvEG5EryDS1g7MY5uhscbpePDYyL3O4O7rwoieVxkAvwR-iGaCrJAauthaPLYy0bbLKyk7uM0jOK-9ytIdqFSodnQJ-bluaW6JSCxMMqBJcgRj1S070PU-TQ052-nfdgR3_BvEUudlNEwBFhQ2"
+			},
+			"apiConfigs":{
+				"clientId":"paybikaj40v8jy7gcbaxqdgs",
+				"clientSecret":"M62ONRlNrp8MahO5RO0x15pF",
+				"origin":"https://mc4by0xw84s11pznjgq1c45n7qr0.rest.marketingcloudapis.com/",
+				"authOrigin":"https://mc4by0xw84s11pznjgq1c45n7qr0.auth.marketingcloudapis.com/",
+				"soapOrigin":"https://mc4by0xw84s11pznjgq1c45n7qr0.soap.marketingcloudapis.com/",
+				"accountId":"7236752"
 			}
 		}
 	}
