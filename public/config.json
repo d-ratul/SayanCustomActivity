@@ -19,31 +19,25 @@
 			"url": "https://custom-blackout.herokuapp.com/activity/save",
 			"verb": "POST",
 			"body": "",
-			"useJwt": false,
-			"customerKey":"56bf39db-8632-4338-9f23-4b0550098197"			
+			"useJwt": false
 		},
 		"publish": {
 			"url": "https://custom-blackout.herokuapp.com/activity/publish",
 			"verb": "POST",
 			"body": "",
-			"useJwt": false,
-			"customerKey":"56bf39db-8632-4338-9f23-4b0550098197"	
+			"useJwt": false
 		},
 		"validate": {
 			"url": "https://custom-blackout.herokuapp.com/activity/validate",
 			"verb": "POST",
 			"body": "",
-			"useJwt": false,
-			"customerKey":"56bf39db-8632-4338-9f23-4b0550098197"				
-			
+			"useJwt": false
 		},
 		"stop": {
 			"url": "https://custom-blackout.herokuapp.com/activity/stop",
 			"verb": "POST",
 			"body": "",
-			"useJwt": false,
-			"customerKey":"56bf39db-8632-4338-9f23-4b0550098197"				
-			
+			"useJwt": false
 		}
 	},
 	"wizardSteps": [
@@ -87,7 +81,6 @@
 			"body": "",
 			"useJwt": false,
 			"header": "",
-			"customerKey":"56bf39db-8632-4338-9f23-4b0550098197",	
 			"format": "json",
 			"timeout": 90000
 		}
