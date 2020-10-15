@@ -211,6 +211,7 @@ let _fetchSubscriberRowInBlackoutDataExtension = function (parameters) {
                     isSubscriber: isSubscriber,
                     lastHolidayDate: parameters.temporaryDate,
                     subscriberKey: parameters.subscriberKey,
+                    blackoutDESubscriberField:parameters.blackoutDESubscriberField,
                     blackoutDEHolidayField: parameters.blackoutDEHolidayField,
                     blackoutDE: parameters.blackoutDE
                 });
