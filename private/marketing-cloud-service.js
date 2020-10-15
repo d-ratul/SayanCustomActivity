@@ -182,6 +182,9 @@ let fetchHolidayListfromHolidayDE = function(result, fieldName){
 
 let _fetchSubscriberRowInBlackoutDataExtension = function (parameters) {
     // Check if a subscriber row exists and then fire an insert or update to insert data row.
+
+    console.log(" DE",parameters.blackoutDE,"SubAttr",parameters.blackoutDESubscriberField,"blaAttr",parameters.blackoutDEHolidayField,"subskey",parameters.subscriberKey);
+
     return new Promise(function (resolve, reject) {
         let options = {
             Name: parameters.blackoutDE,
@@ -195,7 +198,7 @@ let _fetchSubscriberRowInBlackoutDataExtension = function (parameters) {
             }
         };
 
-        let deRow = client.dataExtensionColumn(options);
+        let deRow = client.dataExtensionRow(options);
         // deRow.objName = `DataExtensionObject[${parameters.blackoutDE}]`;
 
         deRow.get(function (err, response) {
