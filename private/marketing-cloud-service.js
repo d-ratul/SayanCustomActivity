@@ -250,7 +250,7 @@ let _createLastHolidayRow = function (parameters) {
                     console.log("Error Post",err)
                     return expressResponse.status(500).send(err)
                 } else {
-                    console.log("Response Post",res)
+                    console.log("Response Post",response)
                     return expressResponse.status(SUCCESS_STATUS_CODE).json({branchResult: 'forward'});
                 }
             });
@@ -260,7 +260,7 @@ let _createLastHolidayRow = function (parameters) {
                     console.log("Error Patch",err)
                     return expressResponse.status(500).send(err)
                 } else {
-                    console.log("Response Patch",res)
+                    console.log("Response Patch",response)
                     return expressResponse.status(SUCCESS_STATUS_CODE).json({branchResult: 'forward'});
                 }
             });
