@@ -167,6 +167,7 @@ let fetchHolidayListfromHolidayDE = function(result, fieldName){
                     if (value.Properties.Property.Name.toLowerCase() === fieldName.toLowerCase()) {
                         let receivedDate = moment.utc(value.Properties.Property.Value, sfmcInstanceConfigs.defaultDateFormat);
                         holidayList.push(receivedDate.format(sfmcInstanceConfigs.defaultDateFormat));
+                        console.log("date- holi ",receivedDate.format(sfmcInstanceConfigs.defaultDateFormat));
                     }
             
                 }
@@ -202,6 +203,7 @@ let _fetchSubscriberRowInBlackoutDataExtension = function (parameters) {
                 reject(err);
             } else {
                 let isSubscriber = _parseSubscriberKeyQueryResponse(response);
+                console.log("IsSubscriber - ",isSubscriber);
                 resolve({
                     isSubscriber: isSubscriber,
                     lastHolidayDate: parameters.temporaryDate,
@@ -237,16 +239,20 @@ let _createLastHolidayRow = function (parameters) {
         if (parameters.isSubscriber==false) {
             deRow.post(function (err, response) {
                 if (err) {
+                    console.log("Error Post",err)
                     return expressResponse.status(500).send(err)
                 } else {
+                    console.log("Response Post",res)
                     return expressResponse.status(SUCCESS_STATUS_CODE).json({branchResult: 'forward'});
                 }
             });
         } else {
             deRow.patch(function (err, response) {
                 if (err) {
+                    console.log("Error Patch",err)
                     return expressResponse.status(500).send(err)
                 } else {
+                    console.log("Response Patch",res)
                     return expressResponse.status(SUCCESS_STATUS_CODE).json({branchResult: 'forward'});
                 }
             });
