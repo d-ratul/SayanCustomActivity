@@ -88,7 +88,7 @@
 	"outcomes": [
 		{
 			"arguments": {
-				"branchResult": "result"
+				"branchResult": "forward"
 			},
 			"metaData": {
 				"label": "Join to wait element"
