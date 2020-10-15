@@ -195,7 +195,7 @@ let _fetchSubscriberRowInBlackoutDataExtension = function (parameters) {
             }
         };
 
-        let deRow = SFMC_Client.dataExtensionColumn(options);
+        let deRow = client.dataExtensionColumn(options);
         // deRow.objName = `DataExtensionObject[${parameters.blackoutDE}]`;
 
         deRow.get(function (err, response) {
@@ -234,7 +234,7 @@ let _createLastHolidayRow = function (parameters) {
         options.props=deProps;
 
 
-        let deRow = SFMC_Client.dataExtensionRow(options);
+        let deRow = client.dataExtensionRow(options);
 
         if (parameters.isSubscriber==false) {
             deRow.post(function (err, response) {
