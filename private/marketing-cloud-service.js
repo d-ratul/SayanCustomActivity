@@ -221,6 +221,10 @@ let _fetchSubscriberRowInBlackoutDataExtension = function (parameters) {
 };
 
 let _createLastHolidayRow = function (parameters) {
+
+    console.log("rrr DE",parameters.blackoutDE,"SubAttr",parameters.blackoutDESubscriberField,"blaAttr",parameters.blackoutDEHolidayField,"subskey",parameters.subscriberKey,"fhfsaye",parameters.lastHolidayDate);
+
+
     return new Promise(function (resolve, reject) {
         let options = {};
         // options.CustomerKey = parameters.blackoutDE;
