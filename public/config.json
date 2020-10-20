@@ -1,8 +1,8 @@
 {	
 	"workflowApiVersion": "1.1",
 	"metaData": {
-		"icon": "images/icon.png",
-		"iconSmall": "images/icon_small.png",
+		"icon": "lib/images/icon.png",
+		"iconSmall": "lib/images/icon_small.png",
 		"category": "flowcontrol",
 		"configOnDrop": true
 	},
